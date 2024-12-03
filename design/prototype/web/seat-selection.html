@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seat Selection</title>
+  <link rel="stylesheet" href="seat-selection.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">TravelBuddy</h1>
+    </div>
+  </header>
+  <main class="main">
+    <section class="seat-selection">
+      <h2>Select Your Seat</h2>
+      
+      <!-- First Class -->
+      <h3>First Class</h3>
+      <div class="plane-section">
+        <div class="row">
+          <div class="seat available" id="F1A">F1A</div>
+          <div class="seat available" id="F1B">F1B</div>
+        </div>
+        <div class="row">
+          <div class="seat available" id="F2A">F2A</div>
+          <div class="seat available" id="F2B">F2B</div>
+        </div>
+      </div>
+
+      <!-- Business Class -->
+      <h3>Business Class</h3>
+      <div class="plane-section">
+        <div class="row">
+          <div class="seat available" id="B1A">B1A</div>
+          <div class="seat available" id="B1B">B1B</div>
+          <div class="seat available" id="B1C">B1C</div>
+        </div>
+        <div class="row">
+          <div class="seat available" id="B2A">B2A</div>
+          <div class="seat available" id="B2B">B2B</div>
+          <div class="seat available" id="B2C">B2C</div>
+        </div>
+      </div>
+
+      <!-- Economy Class -->
+      <h3>Economy Class</h3>
+      <div class="plane-section">
+        <div class="row">
+          <div class="seat available" id="E1A">E1A</div>
+          <div class="seat available" id="E1B">E1B</div>
+          <div class="seat available" id="E1C">E1C</div>
+          <div class="seat available" id="E1D">E1D</div>
+          <div class="seat available" id="E1E">E1E</div>
+          <div class="seat available" id="E1F">E1F</div>
+        </div>
+        <div class="row">
+          <div class="seat available" id="E2A">E2A</div>
+          <div class="seat available" id="E2B">E2B</div>
+          <div class="seat available" id="E2C">E2C</div>
+          <div class="seat available" id="E2D">E2D</div>
+          <div class="seat available" id="E2E">E2E</div>
+          <div class="seat available" id="E2F">E2F</div>
+        </div>
+      </div>
+
+      <div><button class="confirm-btn" onclick="window.location.href='payment.html'" >Confirm Selection</button></div>
+    </section>
+  </main>
+  <footer class="footer">
+    © 2024 TravelBuddy. All adventures await!
+  </footer>
+  <script src="seat-selection.js"></script>
+</body>
+</html>

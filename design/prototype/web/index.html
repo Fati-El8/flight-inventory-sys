@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TravelBuddy</title>
+  <link rel="stylesheet" href="index.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">TravelBuddy</h1>
+      <nav class="nav">
+        <a href="#"><i class="fas fa-globe"></i> Destinations</a>
+        <a href="#"><i class="fas fa-lightbulb"></i> Suggestions</a>
+        <a href="#"><i class="fas fa-dollar-sign"></i> Prices</a>
+        <button class="login-btn"><i class="fas fa-user"></i> Login</button>
+      </nav>
+    </div>
+  </header>
+  <main class="main">
+    <section class="intro">
+      <h2>Discover Your Next Adventure</h2>
+      <p>Find inspiring travel destinations with transparent pricing</p>
+    </section>
+    <section class="search">
+      <input type="text" placeholder="Destination" class="input" />
+      <input type="date" class="input" />
+      <select class="input">
+        <option>Travelers</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+      </select>
+      <button class="search-btn"><i class="fas fa-search"></i> Find Destinations</button>
+    </section>
+    <section class="destinations">
+      <div class="card">
+        <img src="bali.jpeg" alt="Bali" class="city-image">
+        <h3>Bali, Indonesia</h3>
+        <p class="price">$1200</p>
+        <p class="rating">⭐ 4.8</p>
+        <button onclick="window.location.href='seat-selection.html'" ><i class="fas fa-plane"></i> Reserve</button>
+      </div>
+      <div class="card">
+        <img src="paris.jpg" alt="Paris" class="city-image">
+        <h3>Paris, France</h3>
+        <p class="price">$1500</p>
+        <p class="rating">⭐ 4.9</p>
+        <button><i class="fas fa-plane"></i> Reserve</button>
+      </div>
+      <div class="card">
+        <img src="tokyo.jpg" alt="Tokyo" class="city-image">
+        <h3>Tokyo, Japan</h3>
+        <p class="price">$1800</p>
+        <p class="rating">⭐ 4.7</p>
+        <button><i class="fas fa-plane"></i> Reserve</button>
+      </div>
+      <div class="card">
+        <img src="nyc.jpg" alt="New York" class="city-image">
+        <h3>New York, USA</h3>
+        <p class="price">$1600</p>
+        <p class="rating">⭐ 4.6</p>
+        <button><i class="fas fa-plane"></i> Reserve</button>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    © 2024 TravelBuddy. All adventures await!
+  </footer>
+</body>
+</html>
