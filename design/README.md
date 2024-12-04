@@ -33,7 +33,7 @@ The design process included several steps:
 - **Dashboard**: Main dashboard where users can interact with core functionalities.
 - **Settings**: Screens for user and system settings.
 - **Error Pages**: Standard error pages (404, 500, etc.).
-
+hhhhhhh
 ## Next Steps
 
 Once the design is finalized and approved, we will proceed with the **development phase**, where the prototype will be implemented into code, divided into the frontend and backend, using technologies such as React, Spring Boot, and others.
