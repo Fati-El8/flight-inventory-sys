@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
   <component name="AdditionalModuleElements">
+<<<<<<< HEAD
     <content url="file://$MODULE_DIR$" dumb="true">
       <sourceFolder url="file://$MODULE_DIR$/implementation/src/main/code/com/next1" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/implementation/src/main/java" isTestSource="false" />
@@ -9,6 +10,10 @@
       <excludeFolder url="file://$MODULE_DIR$/implementation/src/main/code/com/next1/security" />
       <excludeFolder url="file://$MODULE_DIR$/implementation/src/main/java/com/next1/security" />
       <excludeFolder url="file://$MODULE_DIR$/implementation/src/main/java/security" />
+=======
+    <content url="file://$MODULE_DIR$/implementation" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$/implementation/src/main/java/com/next1" isTestSource="false" />
+>>>>>>> ayman
     </content>
   </component>
 </module>
