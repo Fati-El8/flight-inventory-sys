@@ -1,0 +1,68 @@
+/* General Reset */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  .header {
+    background-color: #1e90ff;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+  }
+  .main {
+    padding: 20px;
+    text-align: center;
+  }
+  h3 {
+    margin: 20px 0 10px;
+    color: #444;
+  }
+  
+  /* Seat Layout */
+  .plane-section {
+    display: inline-block;
+    margin: 20px 0;
+  }
+  .row {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  .seat {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    background-color: #ccc;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .seat:hover {
+    background-color: #1e90ff;
+  }
+  .seat.selected {
+    background-color: #4caf50;
+  }
+  .seat.unavailable {
+    background-color: #ff4d4d;
+    cursor: not-allowed;
+  }
+  .confirm-btn {
+    background-color: #1e90ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .confirm-btn:hover {
+    background-color: #1c7ed6;
+  }
+  
