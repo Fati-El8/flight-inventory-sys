@@ -1,4 +1,4 @@
-package com.tdigroup.flight_inventory_sys;
+package tdigroup.flight_inventory_sys;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

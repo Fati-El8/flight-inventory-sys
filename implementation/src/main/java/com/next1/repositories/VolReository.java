@@ -1,9 +1,12 @@
 package repositories;
 
-import entities.PlaneEntity;
+import entities.VolEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface PlaneReository extends JpaRepository<PlaneReository, Integer> {
+public interface VolReository extends JpaRepository<VolEntity, Integer> {
+
 }
