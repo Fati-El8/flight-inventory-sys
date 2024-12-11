@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReservationReository extends JpaRepository<ReservationEntity, Integer> {
+    boolean existsByVolIdAndSeatNumber(Integer volId, String seatNumber);
 }

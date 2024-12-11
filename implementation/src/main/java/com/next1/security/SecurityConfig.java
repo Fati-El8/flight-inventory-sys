@@ -1,4 +1,4 @@
-package main.java.security;
+package com.next1.security;
 
 import com.next1.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;

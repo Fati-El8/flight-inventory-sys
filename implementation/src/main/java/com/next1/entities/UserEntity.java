@@ -34,5 +34,5 @@ public class UserEntity {
     private List<StaffEntity> supervisedStaff; // Liste des membres d'équipage supervisés
 
     @OneToMany(mappedBy = "passager") // Relation avec StaffEntity
-    private List<StaffEntity> reservations; // Liste des membres d'équipage supervisés
+    private List<ReservationEntity> reservations; // Liste des membres d'équipage supervisés
 }

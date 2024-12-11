@@ -7,6 +7,8 @@ import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Data
 @Getter
@@ -15,7 +17,8 @@ public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @Column
+    private Date date_payment;
     @OneToOne
     @JoinColumn(name ="reservation_id")
     private ReservationEntity reservation;

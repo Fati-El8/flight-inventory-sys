@@ -1,10 +1,10 @@
-package services;
+package com.next1.services;
 
-import entities.AeroportEntity;
-import entities.VolEntity;
+import com.next1.entities.AeroportEntity;
+import com.next1.entities.VolEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.AroportRepository;
+import com.next1.repositories.AroportRepository;
 
 import java.util.List;
 import java.util.Optional;

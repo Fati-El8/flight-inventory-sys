@@ -1,4 +1,4 @@
-package security;
+package com.next1.security;
 
 import com.next1.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    private main.java.security.JwtUtils jwtUtils;
+    private JwtUtils jwtUtils;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;

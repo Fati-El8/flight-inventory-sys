@@ -1,6 +1,6 @@
 package com.next.tdigroup.flight_inventory_sys;
 
-import com.next1.tdigroup.flight_inventory_sys.GestionVolsAeriensApplication;
+import com.next1.GestionVolsAeriensApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

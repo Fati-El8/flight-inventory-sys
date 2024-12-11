@@ -1,18 +1,23 @@
-package services;
+package com.next1.services;
 
 
-import entities.ReservationEntity;
-import entities.VolEntity;
+import com.next1.entities.ReservationEntity;
+import com.next1.entities.VolEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.ReservationReository;
-import repositories.VolReository;
+import com.next1.repositories.ReservationReository;
+import com.next1.repositories.VolReository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ReservationService {
+
+    @Autowired
+    private VolReository volRepository;
+
     @Autowired
     public ReservationReository reservationReository ;
 
@@ -24,8 +29,22 @@ public class ReservationService {
         return reservationReository.findById(id);
     }
 
-    public ReservationEntity saveReservation(ReservationEntity reservation){
+    @Transactional
+    public ReservationEntity saveReservation(ReservationEntity reservation) {
+        // Vérifier si le vol existe
+        VolEntity vol = volRepository.findById(reservation.getVol().getId_vol())
+                .orElseThrow(() -> new IllegalArgumentException("Le vol n'existe pas"));
+
+        // Vérifier la disponibilité du siège
+        boolean seatExists = reservationReository.existsByVolIdAndSeatNumber(reservation.getVol().getId_vol(), reservation.getSeatNumber());
+        if (seatExists) {
+            throw new IllegalArgumentException("Le siège est déjà réservé.");
+        }
+
+        // Créer et enregistrer la réservation
         return reservationReository.save(reservation);
+
+
     }
 
     public ReservationEntity updatereservation(Integer id, ReservationEntity ReservationDetails) {

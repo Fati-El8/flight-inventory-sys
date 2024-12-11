@@ -1,11 +1,15 @@
 package com.next1.security;
 
-import com.next1..services.UserDetailsImpl;
+import com.next1.services.UserDetailsImpl;
 
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+
 
 import javax.crypto.SecretKey;
 import java.util.Date;

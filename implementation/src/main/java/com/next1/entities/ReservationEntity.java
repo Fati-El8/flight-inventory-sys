@@ -5,19 +5,23 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 @Data
 @Getter
 @Setter
+@Table(name = "reservations", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"vol_id", "seat_number"})
+})
 public class ReservationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_reservation;
 
     @Column
-    private Date date_reservation;
+    private LocalDateTime date_reservation;
 
     @Column
     private String seatNumber;
