@@ -1,10 +1,10 @@
-package services;
+package com.next1.services;
 
 
-import entities.PlaneEntity;
+import com.next1.entities.PlaneEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.PlaneReository;
+import com.next1.repositories.PlaneReository;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public class PlaneService {
         return planeReository.save(plane);
     }
 
-    public PlaneEntity updateBook(Integer id, PlaneEntity planeDetails) {
+    public PlaneEntity updatePlane(Integer id, PlaneEntity planeDetails) {
         return  planeReository.findById(id)
                 .map(plane -> {
                     plane.setCapacity(planeDetails.getCapacity());

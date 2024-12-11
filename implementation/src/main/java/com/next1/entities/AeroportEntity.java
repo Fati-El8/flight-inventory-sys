@@ -1,12 +1,17 @@
-package entities;
+package com.next1.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Data
+@Getter
+@Setter
+
 public class AeroportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +32,12 @@ public class AeroportEntity {
     @Column
     private int capacitie;
 
-    @OneToMany
-    @JoinColumn(name = "aeroport_id")
-    // @OneToMany(mappedBy = "library", cascade = CascadeType.ALL)
-    private List<VolEntity> vols;
 
-    @OneToMany(mappedBy = "aeroport")
-    private List<PlaneEntity> planes;
+    @OneToMany(mappedBy = "aeroportDepart") // Relation avec l'aéroport de départ dans VolEntity
+    private List<VolEntity> volsDepart;
+
+    @OneToMany(mappedBy = "aeroportArrive") // Relation avec l'aéroport d'arrivée dans VolEntity
+    private List<VolEntity> volsArrive;
+
 
 }

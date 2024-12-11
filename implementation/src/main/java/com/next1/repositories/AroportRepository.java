@@ -1,6 +1,6 @@
-package repositories;
+package com.next1.repositories;
 
-import entities.AeroportEntity;
+import com.next1.entities.AeroportEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
