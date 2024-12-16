@@ -15,9 +15,11 @@ import java.util.Set;
 @Getter
 @Setter
 public class VolEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_vol;
+    @Column(name = "id_vol")
+    private Integer Vol_Id;
 
     @Column(length = 3)
     private String vol_IATA;

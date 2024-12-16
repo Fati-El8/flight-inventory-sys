@@ -3,9 +3,10 @@ package com.next1.services;
 
 import com.next1.entities.ReservationEntity;
 import com.next1.entities.VolEntity;
+import com.next1.repositories.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.next1.repositories.ReservationReository;
+
 import com.next1.repositories.VolReository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ public class ReservationService {
     private VolReository volRepository;
 
     @Autowired
-    public ReservationReository reservationReository ;
+    public ReservationRepository reservationReository ;
 
     public List<ReservationEntity> getallReservation(){
         return reservationReository.findAll();
@@ -32,11 +33,11 @@ public class ReservationService {
     @Transactional
     public ReservationEntity saveReservation(ReservationEntity reservation) {
         // Vérifier si le vol existe
-        VolEntity vol = volRepository.findById(reservation.getVol().getId_vol())
+        VolEntity vol = volRepository.findById(reservation.getVol().getVol_Id())
                 .orElseThrow(() -> new IllegalArgumentException("Le vol n'existe pas"));
 
         // Vérifier la disponibilité du siège
-        boolean seatExists = reservationReository.existsByVolIdAndSeatNumber(reservation.getVol().getId_vol(), reservation.getSeatNumber());
+        boolean seatExists = reservationReository.existsByVolAndSeatNumber(vol, reservation.getSeatNumber());
         if (seatExists) {
             throw new IllegalArgumentException("Le siège est déjà réservé.");
         }

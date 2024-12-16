@@ -6,15 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Entity
 @Data
 @Getter
 @Setter
-@Table(name = "reservations", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"vol_id", "seat_number"})
-})
+
 public class ReservationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,14 +21,14 @@ public class ReservationEntity {
     @Column
     private LocalDateTime date_reservation;
 
-    @Column
+    @Column(unique = true)
     private String seatNumber;
 
     @Column
     private double prix; // Ajout de l'attribut prix
 
     @ManyToOne
-    @JoinColumn(name = "vol_id") // Relation avec un vol
+    @JoinColumn(name = "id_vol") // Relation avec un vol
     private VolEntity vol;
 
     @ManyToOne

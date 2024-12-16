@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.next1.repositories.PaymentReository;
 import com.next1.repositories.PlaneReository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class PaymentService {
     @Autowired
     private PaymentReository paymentReository ;
@@ -49,7 +50,7 @@ public class PaymentService {
     }
 
 
-    @Value("${stripe.api.key.secret}")
+    @Value("${stripe.api.key}")
     private String secretKey;
 
     // Constructor to initialize Stripe API key
