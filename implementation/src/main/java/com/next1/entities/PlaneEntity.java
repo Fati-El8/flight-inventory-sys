@@ -1,13 +1,17 @@
-package entities;
+package com.next1.entities;
 
 import jakarta.persistence.Entity;
 import lombok.Data;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 @Entity
 @Data
-
+@Getter
+@Setter
 public class PlaneEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +31,7 @@ public class PlaneEntity {
 
     @ManyToOne
     @JoinColumn(name = "aeroport_id")
-    private AeroportEntity aeroport;
+    private AeroportEntity aeroport;    // machi drr
 
     @OneToMany(mappedBy = "plane")
     private List<VolEntity> vols;

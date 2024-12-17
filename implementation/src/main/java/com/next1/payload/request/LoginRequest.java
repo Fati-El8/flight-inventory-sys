@@ -1,4 +1,4 @@
-package payload;
+package com.next1.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

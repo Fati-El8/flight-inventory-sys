@@ -1,6 +1,6 @@
-package services;
+package com.next1.services;
 
-import entities.UserEntity;
+import com.next1.entities.UserEntity;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

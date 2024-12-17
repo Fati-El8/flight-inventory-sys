@@ -1,11 +1,11 @@
-package services;
+package com.next1.services;
 
-import entities.StaffEntity;
-import entities.VolEntity;
+import com.next1.entities.StaffEntity;
+import com.next1.entities.VolEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.StaffReository;
-import repositories.VolReository;
+import com.next1.repositories.StaffReository;
+import com.next1.repositories.VolReository;
 
 import java.util.List;
 import java.util.Optional;
