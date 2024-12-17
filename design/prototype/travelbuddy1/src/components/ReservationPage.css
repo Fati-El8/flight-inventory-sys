@@ -1,0 +1,56 @@
+.reservation-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    text-align: center;
+    color: #333;
+  }
+  
+  .reservation-details {
+    margin-bottom: 20px;
+  }
+  
+  .reservation-details p {
+    font-size: 18px;
+    margin: 8px 0;
+  }
+  
+  .traveler-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .adjust-button {
+    font-size: 18px;
+    margin: 0 10px;
+    padding: 5px 15px;
+    cursor: pointer;
+  }
+  
+  .action-button {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .proceed-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  .proceed-button:hover {
+    background-color: #45a049;
+  }
+  
