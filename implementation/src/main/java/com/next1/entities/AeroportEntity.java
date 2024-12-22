@@ -1,5 +1,6 @@
 package com.next1.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -12,13 +13,14 @@ import java.util.List;
 @Getter
 @Setter
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AeroportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_aeroport;
 
     @Column
-    private String name_aeroport;
+    private String nameAeroport;
 
     @Column(length = 3)
     private String aeroport_IATA;

@@ -218,3 +218,64 @@ table {
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--primary-color);
 }
+/* Action Buttons Styling */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Delete Button */
+.btn-delete {
+  background-color: var(--warning-color);
+  color: var(--white);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+/* Update Button */
+.btn-update {
+  background-color: var(--accent-color);
+  color: var(--white);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-update:hover {
+  background-color: #27ae60;
+  transform: scale(1.05);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .btn-delete,
+  .btn-update {
+    width: 100%;
+    padding: 8px;
+  }
+}
+
+/* Disable state */
+.btn-delete:disabled,
+.btn-update:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+  transform: none;
+}

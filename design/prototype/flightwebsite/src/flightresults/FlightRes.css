@@ -1,0 +1,139 @@
+/* General Form Container */
+.flight-results {
+  background-color: #1a1a2e;
+  border-radius: 10px;
+  padding: 20px;
+  width: 400px;
+  margin: auto;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Input Fields */
+.flight-results input,
+.flight-results select {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: #23234a;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+/* Input Fields Focus */
+.flight-results input:focus,
+.flight-results select:focus {
+  border: 1px solid #6a11cb;
+}
+
+/* Placeholder Text Color */
+.flight-results input::placeholder {
+  color: #888;
+}
+
+/* Buttons */
+.flight-results button,
+.reserve-btn,
+.action-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* Button Hover */
+.flight-results button:hover,
+.reserve-btn:hover,
+.action-btn:hover {
+  background: linear-gradient(90deg, #2575fc, #6a11cb);
+  transform: scale(1.05);
+}
+
+/* Disabled Button */
+.flight-results button:disabled,
+.reserve-btn:disabled,
+.action-btn:disabled {
+  background: #444;
+  cursor: not-allowed;
+}
+
+/* Error Message */
+.flight-results .error {
+  color: #f74b4b;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+/* Flight Cards */
+.flight-card {
+  background-color: #23234a;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Flight Card Details */
+.flight-card h3 {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.flight-info span {
+  display: block;
+  color: #ccccff;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.flight-info span strong {
+  color: #ffffff;
+}
+
+/* Buttons Inside Flight Cards */
+.price-section button {
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.price-section button:hover {
+  background: linear-gradient(90deg, #2575fc, #6a11cb);
+}
+
+/* No Results Message */
+.no-results {
+  color: #ccccff;
+  text-align: center;
+  font-size: 16px;
+  margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .flight-card {
+    text-align: center;
+  }
+
+  .price-section {
+    text-align: center;
+  }
+}

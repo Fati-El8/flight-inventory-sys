@@ -1,5 +1,6 @@
 package com.next1.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -30,18 +31,16 @@ public class VolEntity {
     @Column
     private Date date_vol;
 
-    @Column
-    private String aeroport_depart;
 
-    @Column
-    private String aeroport_arrive;
 
-    @ManyToOne
-    @JoinColumn(name = "aeroport_depart_id",referencedColumnName = "id_aeroport")
+    @ManyToOne(fetch = FetchType.EAGER)  // Changed from LAZY to EAGER
+    @JoinColumn(name = "aeroport_depart_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "volsDepart", "volsArrive"})
     private AeroportEntity aeroportDepart;
 
-    @ManyToOne
-    @JoinColumn(name = "aeroport_arrive_id", referencedColumnName = "id_aeroport")
+    @ManyToOne(fetch = FetchType.EAGER)  // Changed from LAZY to EAGER
+    @JoinColumn(name = "aeroport_arrive_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "volsDepart", "volsArrive"})
     private AeroportEntity aeroportArrive;
 
     @ManyToOne

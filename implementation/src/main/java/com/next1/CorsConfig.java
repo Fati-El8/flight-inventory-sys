@@ -13,11 +13,12 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Applique CORS à toutes les routes
-                        .allowedOrigins("http://localhost:3000") // Origine autorisée (React)
+                        .allowedOrigins("http://localhost:3000", "http://127.0.0.1:3000") // Origine autorisée (React)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Méthodes HTTP autorisées
-                        .allowedHeaders("*") // Tous les en-têtes autorisés
+                        .allowedHeaders("*")// Tous les en-têtes autorisés
                         .allowCredentials(true); // Autoriser les cookies/sessions
             }
         };
     }
+
 }

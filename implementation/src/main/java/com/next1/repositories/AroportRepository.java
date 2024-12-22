@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AroportRepository extends JpaRepository<AeroportEntity, Integer> {
+    AeroportEntity findByNameAeroport(String nameaeroport);
 }

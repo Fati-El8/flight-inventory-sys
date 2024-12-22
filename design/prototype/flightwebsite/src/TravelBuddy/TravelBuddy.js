@@ -1,55 +1,51 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './TravelBuddy.css';
 import LoginModal from './LoginModal';
+import SignUpModal from '../signupModal/signupModal';
 import ReservationModal from '../ReservationPage/ReservationModal';
 
-// Destination Card Component
-const DestinationCard = ({ destination, onReserve }) => {
-  const { image, name, country, price, rating } = destination;
-
+const CityImage = ({ city, onReserve }) => {
   return (
-    <div className="card">
-      <img src={image} alt={name} className="city-image" />
-      <h3>{name}, {country}</h3>
-      <div className="card-details">
-        <span className="price">${price}</span>
-        <span className="rating">⭐ {rating}</span>
+    <div className="city-container" onClick={() => onReserve(city)}>
+      <img src={city.image} alt={city.name} className="city-image" />
+      <div className="city-overlay">
+        <h3>{city.name}</h3>
+        <p>{city.country}</p>
       </div>
-      <button 
-        className="reserve-btn" 
-        onClick={() => onReserve(destination)}
-      >
-        Reserve
-      </button>
     </div>
   );
 };
 
-// Main TravelBuddy Component
 const TravelBuddy = () => {
-  const destinations = [
-    { id: 1, name: 'Bali', country: 'Indonesia', image: '/bali.jpeg', price: 1200, rating: 4.8 },
-    { id: 2, name: 'Paris', country: 'France', image: '/paris.jpg', price: 1500, rating: 4.9 },
-    { id: 3, name: 'Tokyo', country: 'Japan', image: '/tokyo.jpg', price: 1800, rating: 4.7 },
-    { id: 4, name: 'New York', country: 'USA', image: '/nyc.jpg', price: 1600, rating: 4.6 }
+  const navigate = useNavigate();
+  const cities = [
+    { id: 1, name: 'Bali', country: 'Indonesia', image: '/bali.jpeg' },
+    { id: 2, name: 'Paris', country: 'France', image: '/paris.jpg' },
+    { id: 3, name: 'Tokyo', country: 'Japan', image: '/tokyo.jpg' },
+    { id: 4, name: 'New York', country: 'USA', image: '/nyc.jpg' }
   ];
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
-  const [selectedDestination, setSelectedDestination] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
 
-  const toggleLoginModal = () => {
-    setIsLoginModalOpen(!isLoginModalOpen);
+  const toggleLoginModal = () => setIsLoginModalOpen(!isLoginModalOpen);
+  const toggleSignUpModal = () => setIsSignUpModalOpen(!isSignUpModalOpen);
+
+  const handleBookFlight = () => {
+    navigate('/reservation');
   };
 
-  const handleReserve = (destination) => {
-    setSelectedDestination(destination);
+  const handleReserve = (city) => {
+    setSelectedCity(city);
     setIsReservationModalOpen(true);
   };
 
   const closeReservationModal = () => {
     setIsReservationModalOpen(false);
-    setSelectedDestination(null);
+    setSelectedCity(null);
   };
 
   return (
@@ -75,33 +71,31 @@ const TravelBuddy = () => {
           </a>
           
           <nav className="nav-menu">
-            <ul className="nav-links">
-              <li><a href="#destinations">Destinations</a></li>
-              <li><a href="#suggestions">Suggestions</a></li>
-              <li><a href="#prices">Prices</a></li>
-            </ul>
-            <button className="login-btn" onClick={toggleLoginModal}>Login</button>
+            <div className="auth-buttons">
+              <button className="login-btn" onClick={toggleLoginModal}>Login</button>
+              <button className="signup-btn" onClick={toggleSignUpModal}>Sign Up</button>
+            </div>
           </nav>
         </div>
       </header>
 
       <main>
-        <section className="intro" >
+        <section className="intro">
           <div className="intro-content">
-            <h2>Discover Your Next Adventure</h2>
-            <p>Find inspiring travel destinations with transparent pricing</p>
-            <div className="search-bar">
-              <input type="text" placeholder="Search destinations..." />
-              <button className="search-btn">Search</button>
-            </div>
+            <h2>Book Your Next Flight Adventure</h2>
+            <p>Your one-stop platform for booking flights to amazing destinations worldwide. 
+               Experience seamless travel planning with competitive prices and easy booking.</p>
+            <button className="book-flight-btn" onClick={handleBookFlight}>
+              Book Your Flight
+            </button>
           </div>
         </section>
 
-        <section className="destinations">
-          {destinations.map(dest => (
-            <DestinationCard
-              key={dest.id}
-              destination={dest}
+        <section className="cities-grid">
+          {cities.map(city => (
+            <CityImage
+              key={city.id}
+              city={city}
               onReserve={handleReserve}
             />
           ))}
@@ -109,14 +103,15 @@ const TravelBuddy = () => {
       </main>
 
       <footer>
-        © 2024 TravelBuddy. All adventures await!
+        © 2024 TravelBuddy. Your journey begins here!
       </footer>
 
       <LoginModal isOpen={isLoginModalOpen} onClose={toggleLoginModal} />
+      <SignUpModal isOpen={isSignUpModalOpen} onClose={toggleSignUpModal} />
       <ReservationModal 
         isOpen={isReservationModalOpen} 
         onClose={closeReservationModal}
-        destination={selectedDestination}
+        selectedCity={selectedCity?.name}
       />
     </div>
   );

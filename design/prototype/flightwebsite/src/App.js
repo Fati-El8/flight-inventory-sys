@@ -1,26 +1,17 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TravelBuddy from './TravelBuddy/TravelBuddy';
-import './App.css';
+import AddFlight from './travel-buddy-admin/AddFlight'; // Assurez-vous que ce composant existe
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <TravelBuddy />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<TravelBuddy />} />
+        <Route path="/travel-buddy-admin/AddFlight" element={<AddFlight />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
-
-/*import React from "react";
-import AddFlight from "./travel-buddy-admin/AddFlight";
-
-function App() {
-  return (
-    <div>
-      <AddFlight />
-    </div>
-  );
-}
-
-export default App;*/

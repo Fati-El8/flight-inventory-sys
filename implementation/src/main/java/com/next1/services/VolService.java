@@ -1,7 +1,9 @@
 package com.next1.services;
 
 
+import com.next1.entities.AeroportEntity;
 import com.next1.entities.PlaneEntity;
+import com.next1.entities.SearchCriteria;
 import com.next1.entities.VolEntity;
 import com.next1.repositories.PlaneReository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,12 @@ public class VolService {
         return volReository.findById(id);
     }
 
+    public List<VolEntity> searchVols(SearchCriteria criteria) {
+        return volReository.findByAeroportsNames(
+                criteria.getNameAeroportDepart(),
+                criteria.getNameAeroportArrive()
+        );
+    }
     @Transactional
     public VolEntity saveVol(VolEntity vol) {
         return volReository.save(vol);

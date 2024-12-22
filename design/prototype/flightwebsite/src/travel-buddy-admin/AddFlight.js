@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "./AdminDashboard.css";
-import axios from 'axios';
+import axiosInstance from '../services/axiosConfig';
 
 const AdminDashboard = () => {
   // State for different entities with more detailed structures
@@ -13,79 +13,551 @@ const AdminDashboard = () => {
   const volForm = useForm();
   const aeroportForm = useForm();
   const avionForm = useForm();
+  const API_BASE_URL = 'http://localhost:8080/api';
+  // Flight Management Functions
+  const ajouter_vol = async (data) => {
+    try {
+      const token = localStorage.getItem('token');
+      console.log('Token format:', `Bearer ${token}`); // Debug log
+  
+      if (!token) {
+        console.error('No token found');
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      // Format the date properly
+      const formattedData = {
+        ...data,
+        date_vol: data.date_vol ? new Date(data.date_vol).toISOString() : null,
+        aeroportDepart: { name_aeroport: data.aeroportDepartName },
+        aeroportArrive: { name_aeroport: data.aeroportArriveName }
+      };
+      
+      console.log('Sending flight data:', formattedData); // Debug log
+  
+      // Remove the duplicate Authorization header since it's already in the interceptor
+      const response = await axiosInstance.post('http://localhost:8080/api/vols', formattedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },});
+      
+      console.log('Response:', response); // Debug log
+  
+      if (response.status === 201 || response.status === 200) {
+        await charger_tous_les_vols();
+        volForm.reset();
+        return { success: true, message: 'Vol ajouté avec succès' };
+      }
+    } catch (error) {
+      console.error('Full error object:', error); // Debug log
+      
+      if (error.response?.status === 401) {
+        // Handle unauthorized error
+        console.log('Unauthorized - redirecting to login');
+        // You might want to redirect to login here
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      
+      return { 
+        success: false, 
+        message: error.response?.data?.message || 'Erreur lors de l\'ajout du vol' 
+      };
+    }
+  };
 
-  // Flight (Vol) Management
-  const ajouter_vol = (data) => {
-    const newVol = { 
-      ...data, 
-      id_vol: Date.now(),
-      date_vol: new Date(data.date_vol).toISOString()
+const supprimer_vol = async (id) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return { success: false, message: 'Non authentifié' };
+    }
+
+    const response = await axiosInstance.delete(`${API_BASE_URL}/vols/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    if (response.status === 200) {
+      setVols(vols.filter(vol => vol.id_vol !== id));
+      return { success: true, message: 'Vol supprimé avec succès' };
+    }
+  } catch (error) {
+    if (error.response?.status === 401) {
+      return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+    }
+    console.error('Erreur lors de la suppression du vol:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Erreur lors de la suppression du vol'
     };
-    setVols([...vols, newVol]);
+  }
+};
+
+const recuperer_vol = async (id) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return { success: false, message: 'Non authentifié' };
+    }
+
+    const response = await axiosInstance.get(`${API_BASE_URL}/vols/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    if (response.status === 200) {
+      return { success: true, data: response.data };
+    }
+  } catch (error) {
+    if (error.response?.status === 401) {
+      return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+    }
+    console.error('Erreur lors de la récupération du vol:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Erreur lors de la récupération du vol'
+    };
+  }
+};
+
+const mettre_a_jour_vol = async (id, updatedData) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return { success: false, message: 'Non authentifié' };
+    }
+
+    const formattedData = {
+      ...updatedData,
+      date_vol: new Date(updatedData.date_vol).toISOString()
+    };
+
+    const response = await axiosInstance.put(`${API_BASE_URL}/vols/${id}`, formattedData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    if (response.status === 200) {
+      await charger_tous_les_vols(); // Reload all flights after update
+      return { success: true, message: 'Vol mis à jour avec succès' };
+    }
+  } catch (error) {
+    if (error.response?.status === 401) {
+      return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+    }
+    console.error('Erreur lors de la mise à jour du vol:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Erreur lors de la mise à jour du vol'
+    };
+  }
+};
+
+const charger_tous_les_vols = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return { success: false, message: 'Non authentifié' };
+    }
+
+    const response = await axiosInstance.get(`${API_BASE_URL}/vols`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    if (response.status === 200) {
+      setVols(response.data);
+      return { success: true, data: response.data };
+    }
+  } catch (error) {
+    if (error.response?.status === 401) {
+      return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+    }
+    console.error('Erreur lors du chargement des vols:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Erreur lors du chargement des vols'
+    };
+  }
+};
+
+// Modified form submit handler to handle the response
+const onSubmitVol = async (data) => {
+  const result = await ajouter_vol(data);
+  if (result.success) {
+    // Show success message
+    alert(result.message);
     volForm.reset();
-  };
+  } else {
+    // Show error message
+    alert(result.message);
+  }
+};
 
-  const supprimer_vol = (id) => {
-    setVols(vols.filter(vol => vol.id_vol !== id));
-  };
-
-  const recuperer_vol = (id) => {
-    return vols.find(vol => vol.id_vol === id);
-  };
-
-  const mettre_a_jour_vol = (id, updatedData) => {
-    setVols(vols.map(vol => 
-      vol.id_vol === id ? { ...vol, ...updatedData } : vol
-    ));
-  };
-
+// Modified delete handler to handle the response
+const handleDeleteVol = async (id) => {
+  if (window.confirm('Êtes-vous sûr de vouloir supprimer ce vol ?')) {
+    const result = await supprimer_vol(id);
+    if (result.success) {
+      alert(result.message);
+    } else {
+      alert(result.message);
+    }
+  }
+};
   // Airport (Aeroport) Management
-  const ajouter_aeroport = (data) => {
-    const newAeroport = { 
-      ...data, 
-      id_aeroport: Date.now()
-    };
-    setAeroports([...aeroports, newAeroport]);
-    aeroportForm.reset();
+  const ajouter_aeroport = async (data) => {
+    try {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      console.log('Envoi des données aéroport:', data); // Debug log
+  
+      const response = await axiosInstance.post('http://localhost:8080/api/Aeroports', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      
+      console.log('Réponse:', response); // Debug log
+  
+      if (response.status === 201 || response.status === 200) {
+        await charger_tous_les_aeroports();
+        aeroportForm.reset();
+        return { success: true, message: 'Aéroport ajouté avec succès' };
+      }
+    } catch (error) {
+      console.error('Erreur complète:', error);
+      
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      
+      return { 
+        success: false, 
+        message: error.response?.data?.message || 'Erreur lors de l\'ajout de l\'aéroport' 
+      };
+    }
   };
-
-  const supprimer_aeroport = (id) => {
-    setAeroports(aeroports.filter(aeroport => aeroport.id_aeroport !== id));
+  
+  const supprimer_aeroport = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      const response = await axiosInstance.delete(`${API_BASE_URL}/Aeroports/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        setAeroports(aeroports.filter(aeroport => aeroport.id_aeroport !== id));
+        return { success: true, message: 'Aéroport supprimé avec succès' };
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      console.error('Erreur lors de la suppression de l\'aéroport:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Erreur lors de la suppression de l\'aéroport'
+      };
+    }
   };
-
-  const recuperer_aeroport = (id) => {
-    return aeroports.find(aeroport => aeroport.id_aeroport === id);
+  
+  const recuperer_aeroport = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      const response = await axiosInstance.get(`${API_BASE_URL}/Aeroports/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        return { success: true, data: response.data };
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      console.error('Erreur lors de la récupération de l\'aéroport:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Erreur lors de la récupération de l\'aéroport'
+      };
+    }
   };
-
-  const mettre_a_jour_aeroport = (id, updatedData) => {
-    setAeroports(aeroports.map(aeroport => 
-      aeroport.id_aeroport === id ? { ...aeroport, ...updatedData } : aeroport
-    ));
+  
+  const mettre_a_jour_aeroport = async (id, updatedData) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      const response = await axiosInstance.put(`${API_BASE_URL}/Aeroports/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        await charger_tous_les_aeroports();
+        return { success: true, message: 'Aéroport mis à jour avec succès' };
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      console.error('Erreur lors de la mise à jour de l\'aéroport:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Erreur lors de la mise à jour de l\'aéroport'
+      };
+    }
   };
-
+  
+  const charger_tous_les_aeroports = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      const response = await axiosInstance.get(`${API_BASE_URL}/Aeroports`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        setAeroports(response.data);
+        return { success: true, data: response.data };
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      console.error('Erreur lors du chargement des aéroports:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Erreur lors du chargement des aéroports'
+      };
+    }
+  };
+  
+  // Gestionnaire de soumission du formulaire
+  const onSubmitAeroport = async (data) => {
+    const result = await ajouter_aeroport(data);
+    if (result.success) {
+      alert(result.message);
+      aeroportForm.reset();
+    } else {
+      alert(result.message);
+    }
+  };
+  
+  // Gestionnaire de suppression
+  const handleDeleteAeroport = async (id) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cet aéroport ?')) {
+      const result = await supprimer_aeroport(id);
+      if (result.success) {
+        alert(result.message);
+      } else {
+        alert(result.message);
+      }
+    }
+  };
   // Plane (Avion) Management
-  const ajouter_avion = (data) => {
-    const newAvion = { 
-      ...data, 
-      id_avion: Date.now(),
-      annee_fab: parseInt(data.annee_fab)
-    };
-    setAvions([...avions, newAvion]);
-    avionForm.reset();
+  const ajouter_avion = async (data) => {
+    try {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      console.log('Envoi des données avion:', data); // Debug log
+  
+      const response = await axiosInstance.post('http://localhost:8080/api/planes', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      
+      console.log('Réponse:', response); // Debug log
+  
+      if (response.status === 201 || response.status === 200) {
+        await charger_tous_les_avions();
+        avionForm.reset();
+        return { success: true, message: 'Avion ajouté avec succès' };
+      }
+    } catch (error) {
+      console.error('Erreur complète:', error);
+      
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      
+      return { 
+        success: false, 
+        message: error.response?.data?.message || 'Erreur lors de l\'ajout de l\'avion' 
+      };
+    }
   };
-
-  const supprimer_avion = (id) => {
-    setAvions(avions.filter(avion => avion.id_avion !== id));
+  
+  const supprimer_avion = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      const response = await axiosInstance.delete(`${API_BASE_URL}/planes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        setAvions(avions.filter(avion => avion.id_avion !== id));
+        return { success: true, message: 'Avion supprimé avec succès' };
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      console.error('Erreur lors de la suppression de l\'avion:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Erreur lors de la suppression de l\'avion'
+      };
+    }
   };
-
-  const recuperer_avion = (id) => {
-    return avions.find(avion => avion.id_avion === id);
+  
+  const recuperer_avion = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      const response = await axiosInstance.get(`${API_BASE_URL}/planes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        return { success: true, data: response.data };
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      console.error('Erreur lors de la récupération de l\'avion:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Erreur lors de la récupération de l\'avion'
+      };
+    }
   };
-
-  const mettre_a_jour_avion = (id, updatedData) => {
-    setAvions(avions.map(avion => 
-      avion.id_avion === id ? { ...avion, ...updatedData } : avion
-    ));
+  
+  const mettre_a_jour_avion = async (id, updatedData) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      const response = await axiosInstance.put(`${API_BASE_URL}/planes/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        await charger_tous_les_avions();
+        return { success: true, message: 'Avion mis à jour avec succès' };
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      console.error('Erreur lors de la mise à jour de l\'avion:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Erreur lors de la mise à jour de l\'avion'
+      };
+    }
+  };
+  
+  const charger_tous_les_avions = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false, message: 'Non authentifié' };
+      }
+  
+      const response = await axiosInstance.get(`${API_BASE_URL}/planes`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        setAvions(response.data);
+        return { success: true, data: response.data };
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        return { success: false, message: 'Session expirée. Veuillez vous reconnecter.' };
+      }
+      console.error('Erreur lors du chargement des avions:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Erreur lors du chargement des avions'
+      };
+    }
+  };
+  
+  // Gestionnaire de soumission du formulaire
+  const onSubmitAvion = async (data) => {
+    const result = await ajouter_avion(data);
+    if (result.success) {
+      alert(result.message);
+      avionForm.reset();
+    } else {
+      alert(result.message);
+    }
+  };
+  
+  // Gestionnaire de suppression
+  const handleDeleteAvion = async (id) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cet avion ?')) {
+      const result = await supprimer_avion(id);
+      if (result.success) {
+        alert(result.message);
+      } else {
+        alert(result.message);
+      }
+    }
   };
 
   return (

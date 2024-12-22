@@ -1,183 +1,90 @@
 import React, { useState } from 'react';
+import { searchFlights } from '../services/FlightServices';
+import FlightResults from '../flightresults/flightRes';
 import './Reservation.css';
 
-const ReservationModal = ({ isOpen, onClose, destination }) => {
-  const [reservation, setReservation] = useState({
-    id_passager: null,
-    num_passeport: '',
-    num_carte_identite: '',
-    nationalite: '',
-    adresse: '',
-    telephone: '',
-    destination: destination ? `${destination.name}, ${destination.country}` : ''
+const ReservationPage = () => {
+  const [formData, setFormData] = useState({
+    origin: '',
+    destination: '',
+    departureDate: ''
   });
-
-  const [reservations, setReservations] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setReservation(prev => ({
-      ...prev,
+    setFormData(prevState => ({
+      ...prevState,
       [name]: value
     }));
+    // Clear previous results when input changes
+    setSearchResults(null);
+    setError(null);
   };
 
-  const ajouter_reservation = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    const newReservation = {
-      ...reservation,
-      id_passager: Date.now() // Simple unique ID generation
-    };
+    setIsLoading(true);
+    setError(null);
 
-    setReservations(prev => [...prev, newReservation]);
-    
-    // Reset form after submission
-    setReservation({
-      id_passager: null,
-      num_passeport: '',
-      num_carte_identite: '',
-      nationalite: '',
-      adresse: '',
-      telephone: '',
-      destination: destination ? `${destination.name}, ${destination.country}` : ''
-    });
+    try {
+      const flights = await searchFlights(formData);
+      setSearchResults(flights);
+    } catch (error) {
+      setError(error.message);
+      setSearchResults(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const supprimer_reservation = (id) => {
-    setReservations(prev => prev.filter(res => res.id_passager !== id));
+  const handleReservationComplete = (result) => {
+    // Handle successful reservation (e.g., show success message, redirect to confirmation page)
+    console.log('Reservation completed:', result);
   };
-
-  const recuperer_reservation = (id) => {
-    return reservations.find(res => res.id_passager === id);
-  };
-
-  const mettre_a_jour_reservation = (id, updatedData) => {
-    setReservations(prev => 
-      prev.map(res => 
-        res.id_passager === id ? { ...res, ...updatedData } : res
-      )
-    );
-  };
-
-  if (!isOpen) return null;
 
   return (
-    <div className="reservation-modal-overlay">
-      <div className="reservation-modal">
-        <div className="modal-header">
-          <h2>Réservation de Vol</h2>
-          <button className="close-btn" onClick={onClose}>×</button>
-        </div>
+    <div className="reservation-page">
+      <div className="reservation-container">
+        <h2>Find Your Perfect Flight</h2>
+        <form onSubmit={handleSearch}>
+        
+          
+         
+          
+          
 
-        <form onSubmit={ajouter_reservation} className="reservation-form">
-          <div className="form-group">
-            <label>Destination</label>
-            <input 
-              type="text" 
-              value={reservation.destination} 
-              readOnly 
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Numéro de Passeport</label>
-            <input 
-              type="text" 
-              name="num_passeport"
-              value={reservation.num_passeport}
-              onChange={handleInputChange}
-              placeholder="Numéro de passeport"
-              required 
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Numéro de Carte d'Identité</label>
-            <input 
-              type="text" 
-              name="num_carte_identite"
-              value={reservation.num_carte_identite}
-              onChange={handleInputChange}
-              placeholder="Numéro de carte d'identité"
-              required 
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Nationalité</label>
-            <input 
-              type="text" 
-              name="nationalite"
-              value={reservation.nationalite}
-              onChange={handleInputChange}
-              placeholder="Nationalité"
-              required 
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Adresse</label>
-            <input 
-              type="text" 
-              name="adresse"
-              value={reservation.adresse}
-              onChange={handleInputChange}
-              placeholder="Adresse"
-              required 
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Téléphone</label>
-            <input 
-              type="tel" 
-              name="telephone"
-              value={reservation.telephone}
-              onChange={handleInputChange}
-              placeholder="Numéro de téléphone"
-              required 
-            />
-          </div>
-
-          <button type="submit" className="submit-reservation-btn">
-            Confirmer la Réservation
+          <button 
+            type="submit" 
+            className="search-flights-btn" 
+            disabled={isLoading}
+          >
+            {isLoading ? 'Searching...' : 'Search Flights'}
           </button>
         </form>
-
-        {/* Reservation List */}
-        {reservations.length > 0 && (
-          <div className="reservations-list">
-            <h3>Réservations Existantes</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Destination</th>
-                  <th>Passeport</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reservations.map((res) => (
-                  <tr key={res.id_passager}>
-                    <td>{res.destination}</td>
-                    <td>{res.num_passeport}</td>
-                    <td>
-                      <button 
-                        onClick={() => supprimer_reservation(res.id_passager)}
-                        className="delete-btn"
-                      >
-                        Supprimer
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
+
+      {error && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
+
+      {isLoading ? (
+        <div className="loading">Searching for flights...</div>
+      ) : (
+        searchResults && (
+          <FlightResults 
+            flights={searchResults} 
+            searchCriteria={formData}
+            onReservation={handleReservationComplete}
+          />
+        )
+      )}
     </div>
   );
 };
 
-export default ReservationModal;
+export default ReservationPage;

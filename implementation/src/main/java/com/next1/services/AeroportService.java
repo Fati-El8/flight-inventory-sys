@@ -30,7 +30,7 @@ public class AeroportService {
     public AeroportEntity updateAeroport(Integer id, AeroportEntity AeroportDetails) {
         return aroportRepository.findById(id)
                 .map(vol -> {
-                    vol.setName_aeroport(AeroportDetails.getName_aeroport());
+                    vol.setNameAeroport(AeroportDetails.getNameAeroport());
                     vol.setCapacitie(AeroportDetails.getCapacitie());
                     return aroportRepository.save(vol);
                 })
