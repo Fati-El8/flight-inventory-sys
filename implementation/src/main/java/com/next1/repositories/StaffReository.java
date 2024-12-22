@@ -1,6 +1,6 @@
-package repositories;
+package com.next1.repositories;
 
-import entities.StaffEntity;
+import com.next1.entities.StaffEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

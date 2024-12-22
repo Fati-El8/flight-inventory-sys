@@ -1,11 +1,15 @@
-package services;
+package com.next1.services;
 
 
-import entities.PlaneEntity;
-import entities.VolEntity;
+import com.next1.entities.AeroportEntity;
+import com.next1.entities.PlaneEntity;
+import com.next1.entities.SearchCriteria;
+import com.next1.entities.VolEntity;
+import com.next1.repositories.PlaneReository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.VolReository;
+import com.next1.repositories.VolReository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +20,9 @@ public class VolService {
     @Autowired
     public VolReository volReository ;
 
-    public List<VolEntity> getallVolls(){
+
+
+    public List<VolEntity> getAllVols(){
         return volReository.findAll();
     }
 
@@ -24,7 +30,14 @@ public class VolService {
         return volReository.findById(id);
     }
 
-    public VolEntity saveVol(VolEntity vol){
+    public List<VolEntity> searchVols(SearchCriteria criteria) {
+        return volReository.findByAeroportsNames(
+                criteria.getNameAeroportDepart(),
+                criteria.getNameAeroportArrive()
+        );
+    }
+    @Transactional
+    public VolEntity saveVol(VolEntity vol) {
         return volReository.save(vol);
     }
 
